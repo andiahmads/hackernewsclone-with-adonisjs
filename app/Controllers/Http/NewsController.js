@@ -167,13 +167,13 @@ class NewsController {
       });
       return response.redirect('/home')
     }
-
-    session.flash({
-      error: 'you dont have permission to access!!'
-    });
-    return response.redirect('/home')
+    else {
+      session.flash({
+        error: 'you dont have permission to access!!'
+      });
+      return response.redirect('/home')
+    }
   }
-}
 }
 
 module.exports = NewsController
