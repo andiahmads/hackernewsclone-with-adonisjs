@@ -1,0 +1,28 @@
+@layout('layouts.app')
+
+@section('content')
+  <div class="container mt-4">
+    <div class="card-title">
+      <b>Edit Your News</b>
+    </div>
+    <div class="row justify-content">
+      <div class="col-lg-8 col-xs-12">
+
+         <form method="POST" action="{{route('edit',{'id':news.id})}}">
+        {{ csrfField() }}
+        <div class="form-group">
+          <label for="exampleInputEmail1">Title of News</label>
+          <input type="text" class="form-control" value={{news.title}} name="title" placeholder="Enter your Title">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Url Of the News</label>
+          <input type="url" class="form-control" value={{news.url}} name="url" placeholder="enter your URL">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+      </div>
+    </div>
+  </div>
+@endsection

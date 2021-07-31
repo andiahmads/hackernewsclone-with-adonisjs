@@ -88,7 +88,20 @@ class NewsController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {
+  async show({ params, response, view, auth, session }) {
+    // const news = await News.query().where('id', params.id).first();
+    const user = await auth.getUser()
+    const news = await News.find(params.id)
+
+    if (news && news.user_id === user.id) {
+      return view.render('news.edit', { news: news.toJSON('') })
+    }
+    else {
+      session.flash({
+        error: 'you dont have permission to access!!'
+      });
+      return response.redirect('/home')
+    }
   }
 
   /**
@@ -111,7 +124,28 @@ class NewsController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {
+  async update({ params, request, response, session, auth }) {
+    // const news = await News.query().where('id', params.id).first();
+    const user = await auth.getUser();
+    const news = await News.find(params.id);
+
+    const body = request.all();
+    if (news && news.user_id === user.id) {
+      news.user_id = user.id;
+      news.title = body.title;
+      news.url = body.url;
+      await news.save();
+      session.flash({
+        success: 'update data successfuly'
+      });
+      return response.redirect('/home')
+    }
+    else {
+      session.flash({
+        error: 'you dont have permission to access!!'
+      });
+      return response.redirect('/home')
+    }
   }
 
   /**
@@ -122,8 +156,24 @@ class NewsController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ params, request, response }) {
+  async destroy({ params, session, auth, request, response }) {
+    const user = await auth.getUser();
+    const news = await News.find(params.id);
+
+    if (news && news.user_id === user.id) {
+      await news.delete();
+      session.flash({
+        success: 'delete data successfuly'
+      });
+      return response.redirect('/home')
+    }
+
+    session.flash({
+      error: 'you dont have permission to access!!'
+    });
+    return response.redirect('/home')
   }
+}
 }
 
 module.exports = NewsController
