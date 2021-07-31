@@ -7,7 +7,8 @@
     <div class="card-body">
       <div>
         <a href="{{story.url}}">
-          {{story.title}}
+          {{story.title}} <a href="/news/{{story.id}}" class="text-muted">Edit</a> &
+          <a href="/delete/news/{{story.id}}" class="text-muted">Delete</a>
         </a>
       </div>
       <div class="mt-1 row container">

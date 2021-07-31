@@ -36,4 +36,7 @@ Route.group(() => {
   Route.get("/home", "NewsController.home")
   Route.get("/submit", "NewsController.index")
   Route.post("/submit", "NewsController.store")
+  Route.get("/news/:id", "NewsController.show")
+  Route.post("/news/:id", "NewsController.update").as('edit');
+  Route.get("/delete/news/:id", "NewsController.destroy")
 }).middleware('authenticated')
