@@ -14,6 +14,9 @@ class News extends Model {
   user() {
     return this.belongsTo("App/Models/User")
   }
+  upvotes() {
+    return this.hasMany('App/Models/Upvote');
+  }
 
 }
 
